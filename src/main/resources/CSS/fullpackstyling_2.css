@@ -1,0 +1,55 @@
+.button {
+    -fx-background-color:   #0390fc;
+    -fx-background-radius: 30 0 0 30;
+    
+/*    -fx-text-fill: #383838;
+    -fx-text-alignment: left;*/
+}
+
+.button:hover {
+    -fx-background-color: #524A7B;
+     -fx-background-radius: 30 0 0 30;
+    -fx-text-fill: #000;
+}
+
+.button:pressed {
+    -fx-background-color: #2F2B43;
+     -fx-background-radius: 30 0 0 30;
+/*    -fx-text-fill: #364FCD;*/
+}
+
+.button:focused {
+    -fx-background-color: #D9D9D9;
+    -fx-text-fill: #364FCD;
+}
+
+.button2 {
+    -fx-background-color:    #A1E8CC;
+    -fx-background-radius: 20;
+
+}
+
+.button2:hover {
+    -fx-background-color:  #393351;
+    -fx-text-fill: #FFF;
+    -fx-background-radius: 20;
+}
+
+.button2:pressed {
+    -fx-background-color:  #393351;
+    -fx-text-fill: #FFF;
+    -fx-background-radius: 20;
+}
+
+
+.jfx-text-field
+{
+      -fx-prompt-text-fill: #FFFF; /*Yellow - floating label*/
+    -fx-text-fill: #FFFF; /*Yellow - input color*/
+    -fx-highlight-fill: #FFFF; /*Green*/
+}
+
+.jfx-date-picker{
+    -fx-prompt-text-fill: #FFFF;
+    -fx-prompt-text-alligment: right ;
+}

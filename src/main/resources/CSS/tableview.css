@@ -1,0 +1,112 @@
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-cell-size: 20;
+    -fx-background-color: #A1E8CC ;
+}
+
+.table-view .column-header .label {
+
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+.table-view .cell {
+    -fx-cell-size: 30;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #A1E8CC ;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: white;
+
+}
+
+/* scroll bar starts here */
+
+/* The increment and decrement button CSS class of scrollbar */
+.table-view .increment-button, .table-view .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 2em;
+
+}
+
+/* The main scrollbar **track** CSS class  */
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: derive(#2D75E8, 80%);
+    -fx-background-radius: 2em;
+    -fx-border-radius: 2em;
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: derive(#2D75E8, 90%);
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+
+}
+
+.table-row-cell{
+	-fx-table-cell-border-color: transparent;
+    -fx-background-color:  #495159;
+    -fx-background-insets: 0.0, 0.0 0.0 0.0 0.0;
+    -fx-padding: 0.0em;
+}
+
+.table-row-cell:disabled{
+	-fx-opacity:0.5;
+	-fx-background-color:darkgray;	  
+}
+
+.table-row-cell:disabled .text{
+	/*-fx-strikethrough:  true ;*/
+} 
+
+.table-row-cell .text{
+	-fx-font-weight:bold;
+    -fx-fill: white ;
+} 
+
+.table-row-cell:even { /* <=== changed to even */
+    -fx-background-color:  #7c7f82;
+}
+
+
+.table-row-cell:hover{
+	-fx-table-cell-border-color: transparent;
+	/*-fx-table-cell-border-width: 2.0;*/
+}
+
+.table-row-cell:hover .text , .table-row-cell:selected .text{
+     -fx-fill: black ;    
+}
+
+.table-row-cell:hover:selected .text, .table-row-cell:focused:selected .text{
+	-fx-fill:white;
+}
+
+.table-row-cell:focused:disabled{ 
+	-fx-background-color:darkgray;
+}
+
+.table-row-cell:hover , .table-row-cell:selected{
+	/*-fx-background-color:rgb(0.0,191.0,255.0);*/
+	/*-fx-background-color: linear-gradient(#328BDB 0.0%, #207BCF 25.0%, #1973C9 75.0%, #0A65BF 100.0%);*/
+	-fx-background-color :  #A1E8CC ;
+	/*-fx-background-color: linear-gradient(#FF9400 0.0%, #FF7F00 25.0%, #FF5D00 75.0%, #FF4300 100.0%);*/
+}
+
+.table-row-cell.color-class {
+    -fx-background-color: red;
+}
+
+
+

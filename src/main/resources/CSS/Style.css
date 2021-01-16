@@ -1,0 +1,33 @@
+/*
+    Created on : Dec 20, 2020, 9:10:53 PM
+    Author     : mustafa
+*/
+* {
+    -fx-primary : #2A2E37;
+    -fx-secondary : #FFFF8D;
+    -fx-primarytext : #B2B2B2;
+    -fx-blue: #1976D2;
+    -fx-red: #FF0000;
+    -fx-color-1:#1976D2;
+    -fx-color-2:#1d2d50;
+    -fx-color-3:#1d2d50;
+    -fx-color-3:#1e5f74;
+}
+
+#P{
+    -fx-background-color: -fx-color-2;
+}
+/*
+#txtFld{
+    -fx-text-fill: #6ed9a0;
+}
+#txtPass{
+    -fx-text-fill: #6ed9a0;
+}
+*/
+#btnConnect{
+    -fx-background-color:-fx-color-2 ;
+}
+#pane{
+    -fx-background-color: -fx-primary;
+}

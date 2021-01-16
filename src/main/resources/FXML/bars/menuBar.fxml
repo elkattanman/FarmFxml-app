@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<MenuBar layoutY="-1.0" stylesheets="@/CSS/dark-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elkattanman.farmFxml.controllers.bars.MenuBarController">
+    <menus>
+        <Menu mnemonicParsing="false" text="File">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#goSettings" text="Settings" />
+                <MenuItem mnemonicParsing="false" text="Exit" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Add">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Add 1?" />
+                <MenuItem mnemonicParsing="false" text="Add 2?" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="View">
+            <items>
+                <MenuItem mnemonicParsing="false" text="? List" />
+                <MenuItem mnemonicParsing="false" text="? List" />
+                <MenuItem mnemonicParsing="false" text="? List" />
+                <MenuItem mnemonicParsing="false" text="Full Screen" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Notify">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Overdue Notification" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#goHelp" text="About" />
+            </items>
+        </Menu>
+    </menus>
+</MenuBar>

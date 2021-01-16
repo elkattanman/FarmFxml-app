@@ -1,0 +1,66 @@
+#Button {
+    -fx-background-insets: 0,0 0 3 0, 0 0 4 0, 0 0 3 0;
+    -fx-background-radius: 8;
+    -fx-background-color: #A1E8CC;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+    -fx-font-weight: bold;
+    -fx-font-size: 0.9em;
+}
+#Button:hover {
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #A1E8CC 0%, #A1E8CC 100%),
+        #9d4024,
+        #d86e3a,
+        radial-gradient(center 50% 50%, radius 100%, #A1E8CC, #A1E8CC);
+}
+#Button:pressed {
+    -fx-padding: 10 15 13 15;
+    -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
+}
+#Button Text {
+    -fx-fill: white;
+    -fx-effect:  dropshadow( gaussian , #a30000 , 0,0,0,2 );
+}
+
+#txt {
+    -fx-background-color: transparent ;
+    -fx-border-color: white ;
+     -fx-text-fill: white;
+}
+
+
+#btn1{
+   -fx-background-color: transparent ;
+   -fx-border-color: #A1E8CC ;
+   -fx-border-radius: 8 ;  
+}
+#btn1:hover{
+    -fx-background-color: #A1E8CC ;
+    -fx-text-fill: black ; 
+}
+
+#btn2{
+   -fx-background-color: transparent ;
+   -fx-border-color: #E5D4C0 ;
+   -fx-border-radius: 8 ;  
+}
+#btn2:hover{
+    -fx-background-color: #E5D4C0 ;
+    -fx-text-fill: black ; 
+}
+#btn3{
+   -fx-background-color: transparent ;
+   -fx-border-color: red ;
+   -fx-border-radius: 8 ;  
+}
+#btn3:hover{
+    -fx-background-color: red;
+    -fx-text-fill: black ; 
+}
+
+#TAB {
+   -fx-background-color:#A1E8CC ; 
+}
+
+
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="rootPane" prefHeight="900.0" prefWidth="154.0" styleClass="toolbar-container" stylesheets="@/CSS/dark-theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elkattanman.farmFxml.controllers.bars.ToolbarController">
+
+   <children>
+      <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#goToTypes" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="الاصناف" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="BOOK" size="25" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#goToBuy" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="الشراء" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="BOOK" size="25" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#goToSale" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="البيع" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="TABLE" size="25" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" onAction="#goToBorns" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="المواليد" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="TABLE" size="25" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#goToDeath" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="النفوق" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="TABLE" size="25" textAlignment="CENTER" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#goToFeed" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="الاعلاف" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="TABLE" size="25" textAlignment="CENTER" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#goToTreatment" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="العلاج" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="CHECK" size="25" textAlignment="CENTER" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#goToReserve" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="الحجز" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="CHECK" size="25" textAlignment="CENTER" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#goToSpending" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="المصاريف" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="CHECK" size="25" textAlignment="CENTER" />
+         </graphic>
+      </JFXButton>
+      <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#gotoTransaction" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="التحركات" textAlignment="CENTER">
+         <graphic>
+            <FontAwesomeIconView glyphName="USER" size="25" textAlignment="CENTER" />
+         </graphic>
+      </JFXButton>
+   </children>
+</VBox>
