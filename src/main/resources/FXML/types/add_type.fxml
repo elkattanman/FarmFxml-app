@@ -35,14 +35,14 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXCheckBox style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="بيع" />
-                        <JFXCheckBox style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="شراء" GridPane.columnIndex="1" />
-                        <JFXCheckBox style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="مواليد" GridPane.rowIndex="1" />
-                        <JFXCheckBox style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="النفوق" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <JFXCheckBox style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="الاعلاف" GridPane.rowIndex="2" />
-                        <JFXCheckBox style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="الحجز" GridPane.rowIndex="3" />
-                        <JFXCheckBox style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="العلاج" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <JFXCheckBox style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="مصاريف" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <JFXCheckBox fx:id="saleCB" style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="بيع" />
+                        <JFXCheckBox fx:id="buyCB" style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="شراء" GridPane.columnIndex="1" />
+                        <JFXCheckBox fx:id="bornsCB" style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="مواليد" GridPane.rowIndex="1" />
+                        <JFXCheckBox fx:id="deathCB" style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="النفوق" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <JFXCheckBox fx:id="feedCB" style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="الاعلاف" GridPane.rowIndex="2" />
+                        <JFXCheckBox fx:id="reserveCB" style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="الحجز" GridPane.rowIndex="3" />
+                        <JFXCheckBox fx:id="treatmentCB" style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="العلاج" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <JFXCheckBox fx:id="spendingCB" style="-fx-text-fill: -fx-primarytext; -fx-font-size: 20;" text="مصاريف" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      </children>
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" top="20.0" />
@@ -50,8 +50,8 @@
                   </GridPane>
                   <HBox alignment="CENTER" prefHeight="47.0" prefWidth="404.0" spacing="30.0">
                      <children>
-                        <JFXButton fx:id="saveButton" onAction="#addProduct" prefHeight="66.0" prefWidth="100.0" text="Save" />
-                        <JFXButton fx:id="cancelButton" layoutX="10.0" layoutY="10.0" onAction="#cancel" prefHeight="66.0" prefWidth="100.0" text="Cancel" />
+                        <JFXButton onAction="#addProduct" prefHeight="66.0" prefWidth="100.0" text="Save" />
+                        <JFXButton layoutX="10.0" layoutY="10.0" onAction="#cancel" prefHeight="66.0" prefWidth="100.0" text="Cancel" />
                      </children>
                      <VBox.margin>
                         <Insets top="25.0" />

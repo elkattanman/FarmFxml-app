@@ -43,7 +43,6 @@ public class ToolbarController implements Initializable {
     public void goToTypes() {
         AssistantUtil.loadWindow(AssistantUtil.getStage(rootPane),
                 fxWeaver.loadView(TypesFrameController.class));
-
     }
 
     public void goToBuy() {

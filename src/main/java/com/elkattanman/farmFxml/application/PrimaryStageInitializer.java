@@ -29,9 +29,9 @@ public class PrimaryStageInitializer implements ApplicationListener<StageReadyEv
         Stage stage = event.stage;
 
 //        TODO uncomment it when u ready to use
-        Scene scene = new Scene(fxWeaver.loadView(SplashScreen.class), 1200, 700);
+//        Scene scene = new Scene(fxWeaver.loadView(SplashScreen.class), 1200, 700);
 
-//        Scene scene = new Scene(fxWeaver.loadView(MainController.class), 1200, 700);
+        Scene scene = new Scene(fxWeaver.loadView(MainController.class), 1200, 700);
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.show();

@@ -16,12 +16,12 @@
          <children>
             <VBox prefHeight="267.0" prefWidth="404.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <JFXComboBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="440.0" promptText="--- اختر الصنف ---">
+                  <JFXComboBox fx:id="typeCB" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="440.0" promptText="--- اختر الصنف ---">
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" top="20.0" />
                      </VBox.margin>
                   </JFXComboBox>
-                  <JFXDatePicker nodeOrientation="RIGHT_TO_LEFT" prefHeight="28.0" prefWidth="744.0" promptText="التاربخ">
+                  <JFXDatePicker fx:id="dateDP" nodeOrientation="RIGHT_TO_LEFT" prefHeight="28.0" prefWidth="744.0" promptText="التاربخ">
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" top="20.0" />
                      </VBox.margin>
@@ -38,8 +38,8 @@
                   </JFXTextField>
                   <HBox alignment="CENTER" prefHeight="47.0" prefWidth="404.0" spacing="30.0">
                      <children>
-                        <JFXButton fx:id="saveButton" onAction="#addProduct" prefHeight="66.0" prefWidth="100.0" text="Save" />
-                        <JFXButton fx:id="cancelButton" layoutX="10.0" layoutY="10.0" onAction="#cancel" prefHeight="66.0" prefWidth="100.0" text="Cancel" />
+                        <JFXButton onAction="#addProduct" prefHeight="66.0" prefWidth="100.0" text="Save" />
+                        <JFXButton layoutX="10.0" layoutY="10.0" onAction="#cancel" prefHeight="66.0" prefWidth="100.0" text="Cancel" />
                      </children>
                      <VBox.margin>
                         <Insets top="25.0" />

@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 
-<MenuBar layoutY="-1.0" stylesheets="@/CSS/dark-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elkattanman.farmFxml.controllers.bars.MenuBarController">
+<MenuBar fx:id="menuBar" layoutY="-1.0" stylesheets="@/CSS/dark-theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elkattanman.farmFxml.controllers.bars.MenuBarController">
     <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu mnemonicParsing="false" text="ملف">
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#goSettings" text="Settings" />
                 <MenuItem mnemonicParsing="false" text="Exit" />
             </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Add">
+        <Menu mnemonicParsing="false" text="عرض">
             <items>
-                <MenuItem mnemonicParsing="false" text="Add 1?" />
-                <MenuItem mnemonicParsing="false" text="Add 2?" />
+                <MenuItem mnemonicParsing="false" onAction="#goToHome" text="عرض القائمه الرئيسيه" />
+                <MenuItem mnemonicParsing="false" onAction="#goToTypes" text="عرض الاصناف" />
+                <MenuItem mnemonicParsing="false" onAction="#goToBorns" text="عرض المواليد" />
+                <MenuItem mnemonicParsing="false" onAction="#goToDeath" text="عرض الوفيات" />
+                <MenuItem mnemonicParsing="false" onAction="#goToSale" text="عرض البيع" />
+                <MenuItem mnemonicParsing="false" onAction="#goToBuy" text="عرض الشراء" />
+                <MenuItem mnemonicParsing="false" onAction="#goToFeed" text="عرض الاعلاف" />
+                <MenuItem mnemonicParsing="false" onAction="#goToReserve" text="عرض الحجز" />
+                <MenuItem mnemonicParsing="false" onAction="#goToSpending" text="عرض المصاريف" />
+                <MenuItem mnemonicParsing="false" onAction="#goToTreatment" text="عرض الادويه" />
             </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="View">
-            <items>
-                <MenuItem mnemonicParsing="false" text="? List" />
-                <MenuItem mnemonicParsing="false" text="? List" />
-                <MenuItem mnemonicParsing="false" text="? List" />
-                <MenuItem mnemonicParsing="false" text="Full Screen" />
-            </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Notify">
-            <items>
-                <MenuItem mnemonicParsing="false" text="Overdue Notification" />
-            </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
+        <Menu mnemonicParsing="false" text="مساعده">
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#goHelp" text="About" />
             </items>
