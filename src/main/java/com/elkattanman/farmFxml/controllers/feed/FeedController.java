@@ -1,8 +1,9 @@
 package com.elkattanman.farmFxml.controllers.feed;
 
 import com.elkattanman.farmFxml.callback.CallBack;
-import com.elkattanman.farmFxml.controllers.feed.FeedAddController;
+import com.elkattanman.farmFxml.domain.Capital;
 import com.elkattanman.farmFxml.domain.Feed;
+import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.repositories.FeedRepository;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
@@ -17,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -54,11 +56,16 @@ public class FeedController implements Initializable, CallBack<Boolean, Feed> {
     @FXML
     private JFXTextField searchTF;
 
+    @FXML
+    private Text infoTXT;
+
     private ObservableList<Feed> list = FXCollections.observableArrayList();
     private final FeedRepository feedRepository;
+    private final CapitalRepository capitalRepository;
 
-    public FeedController(FeedRepository feedRepository) {
+    public FeedController(FeedRepository feedRepository, CapitalRepository capitalRepository) {
         this.feedRepository = feedRepository;
+        this.capitalRepository = capitalRepository;
     }
 
     private void initCol() {
@@ -75,26 +82,31 @@ public class FeedController implements Initializable, CallBack<Boolean, Feed> {
         initCol();
         list.setAll(feedRepository.findAll());
         table.setItems(list);
+        double total=0.0;
+        total = list.stream().mapToDouble(Feed::getCost).sum();
+        infoTXT.setText("العدد الكلى = "+ list.size() +" والتكلفه الكليه = "+ total);
         MakeMyFilter();
     }
-
-
 
     private void MakeMyFilter(){
         FilteredList<Feed> filteredData = new FilteredList<>(list, s -> true);
         searchTF.textProperty().addListener(
-                (observable, oldValue, newValue) ->
-                        filteredData.setPredicate(feed->{
+                (observable, oldValue, newValue) -> {
+                    filteredData.setPredicate(feed -> {
 
-                            if(newValue == null || newValue.isEmpty() ){
-                                return true ;
-                            }
-                            String lowerCaseFilter = newValue.toLowerCase() ;
-                            if(feed.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1 ){
-                                return true ;
-                            }
-                            return false ;
-                        }));
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+                        String lowerCaseFilter = newValue.toLowerCase();
+                        if (feed.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    double total=0.0;
+                    total = filteredData.stream().mapToDouble(Feed::getCost).sum();
+                    infoTXT.setText("العدد الكلى = "+ filteredData.size() +" والتكلفه الكليه = "+ total);
+                });
 
         SortedList<Feed> sorted = new SortedList<>(filteredData) ;
         sorted.comparatorProperty().bind(table.comparatorProperty());
@@ -118,6 +130,10 @@ public class FeedController implements Initializable, CallBack<Boolean, Feed> {
         Feed selectedItem = table.getSelectionModel().getSelectedItem();
         feedRepository.delete(selectedItem);
         list.remove(selectedItem) ;
+        Capital capital = capitalRepository.findById(1).get();
+        capital.setFeed(capital.getFeed()-selectedItem.getCost());
+        capital.setCurrentTotal(capital.getCurrentTotal()+selectedItem.getCost());
+        capitalRepository.save(capital);
     }
     @FXML
     void refresh(ActionEvent event){
@@ -136,14 +152,21 @@ public class FeedController implements Initializable, CallBack<Boolean, Feed> {
 
     @Override
     public Boolean callBack(Feed obj) {
+        Capital capital = capitalRepository.findById(1).get();
         for (int i=0 ; i < list.size(); ++i) {
             Feed object= list.get(i);
             if (object.getId().equals(obj.getId())) {
+                capital.setFeed(capital.getFeed()-object.getCost()+obj.getCost());
+                capital.setCurrentTotal(capital.getCurrentTotal()+object.getCost()-obj.getCost());
+                capitalRepository.save(capital);
                 list.set(i, obj);
                 return true;
             }
         }
-        list.add(obj) ;
+        capital.setFeed(capital.getFeed()+obj.getCost());
+        capital.setCurrentTotal(capital.getCurrentTotal()-obj.getCost());
+        capitalRepository.save(capital);
+        list.add(obj);
         return true;
     }
 }

@@ -8,6 +8,7 @@ import com.elkattanman.farmFxml.controllers.death.DeathFrameController;
 import com.elkattanman.farmFxml.controllers.feed.FeedFrameController;
 import com.elkattanman.farmFxml.controllers.reserve.ReserveFrameController;
 import com.elkattanman.farmFxml.controllers.sale.SaleFrameController;
+import com.elkattanman.farmFxml.controllers.settings.CapitalController;
 import com.elkattanman.farmFxml.controllers.settings.SettingsController;
 import com.elkattanman.farmFxml.controllers.spending.SpendingFrameController;
 import com.elkattanman.farmFxml.controllers.treatment.TreatmentFrameController;
@@ -91,5 +92,9 @@ public class MenuBarController implements Initializable {
 
     public void goToHome(ActionEvent actionEvent) {
         AssistantUtil.loadWindow(AssistantUtil.getStage(menuBar),fxWeaver.loadView(MainController.class));
+    }
+
+    public void goCapital(ActionEvent actionEvent) {
+        AssistantUtil.loadWindow(null,fxWeaver.loadView(CapitalController.class));
     }
 }

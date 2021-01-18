@@ -1,10 +1,10 @@
 package com.elkattanman.farmFxml.controllers.buy;
 
 import com.elkattanman.farmFxml.callback.CallBack;
-import com.elkattanman.farmFxml.controllers.types.TypeAddController;
 import com.elkattanman.farmFxml.domain.Buy;
-import com.elkattanman.farmFxml.domain.Type;
+import com.elkattanman.farmFxml.domain.Capital;
 import com.elkattanman.farmFxml.repositories.BuyRepository;
+import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
@@ -14,11 +14,11 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -57,13 +57,18 @@ public class BuyController implements Initializable, CallBack<Boolean, Buy> {
 
     @FXML
     private JFXTextField searchTF;
+    @FXML
+    private Text infoTXT;
+
 
     private ObservableList<Buy> list = FXCollections.observableArrayList();
 
     private final BuyRepository buyRepository;
+    private final CapitalRepository capitalRepository;
 
-    public BuyController(BuyRepository buyRepository) {
+    public BuyController(BuyRepository buyRepository, CapitalRepository capitalRepository) {
         this.buyRepository = buyRepository;
+        this.capitalRepository = capitalRepository;
     }
 
     private void initCol() {
@@ -81,6 +86,9 @@ public class BuyController implements Initializable, CallBack<Boolean, Buy> {
         list.setAll(buyRepository.findAll());
         table.setItems(list);
         MakeMyFilter();
+        double total=0.0;
+        total = list.stream().mapToDouble(Buy::getCost).sum();
+        infoTXT.setText("العدد الكلى = "+ list.size() +" والتكلفه الكليه = "+ total);
     }
 
 
@@ -100,12 +108,14 @@ public class BuyController implements Initializable, CallBack<Boolean, Buy> {
                 }
                 return false ;
             });
-
+            double total=0.0;
+            total = filteredData.stream().mapToDouble(Buy::getCost).sum();
+            infoTXT.setText("العدد الكلى = "+ filteredData.size() +" والتكلفه الكليه = "+ total);
         });
 
-        SortedList<Buy> sortedBorns = new SortedList<>(filteredData) ;
-        sortedBorns.comparatorProperty().bind(table.comparatorProperty());
-        table.setItems(sortedBorns);
+        SortedList<Buy> sorted = new SortedList<>(filteredData) ;
+        sorted.comparatorProperty().bind(table.comparatorProperty());
+        table.setItems(sorted);
     }
 
 
@@ -125,6 +135,10 @@ public class BuyController implements Initializable, CallBack<Boolean, Buy> {
         Buy selectedItem = table.getSelectionModel().getSelectedItem();
         buyRepository.delete(selectedItem);
         list.remove(selectedItem) ;
+        Capital capital = capitalRepository.findById(1).get();
+        capital.setBuy(capital.getBuy()-selectedItem.getCost());
+        capital.setCurrentTotal(capital.getCurrentTotal()+selectedItem.getCost());
+        capitalRepository.save(capital);
     }
     @FXML
     void refresh(ActionEvent event){
@@ -150,6 +164,7 @@ public class BuyController implements Initializable, CallBack<Boolean, Buy> {
                 return true;
             }
         }
+
         list.add(obj) ;
         return true;
     }

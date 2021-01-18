@@ -27,31 +27,31 @@ public class Capital implements Serializable {
     @Column(name = "balance", nullable = false)
     private Double balance;
 
-    @Column(name = "buy", nullable = false)
-    private Double buy;
-
     @Column(name = "current_total", nullable = false)
     private Double currentTotal;
+    //-----------------------------------
+    @Column(name = "total_payments", nullable = false)
+    private Double totalPayments;
+
+    @Column(name = "buy", nullable = false)
+    private Double buy;
 
     @Column(name = "feed", nullable = false)
     private Double feed;
 
-    @Column(name = "reserve", nullable = false)
-    private Double reserve;
+    @Column(name = "spending", nullable = false)
+    private Double spending;
+
+    @Column(name = "treatment", nullable = false)
+    private Double treatment;
+    //------------------------------------------------
+    @Column(name = "total_gain", nullable = false)
+    private Double totalGain;
 
     @Column(name = "sales", nullable = false)
     private Double sales;
 
-    @Column(name = "spending", nullable = false)
-    private Double spending;
-
-    @Column(name = "total_gain", nullable = false)
-    private Double totalGain;
-
-    @Column(name = "total_payments", nullable = false)
-    private Double totalPayments;
-
-    @Column(name = "treatment", nullable = false)
-    private Double treatment;
-
+    @Column(name = "reserve", nullable = false)
+    private Double reserve;
+    //-------------------------------------------------
 }

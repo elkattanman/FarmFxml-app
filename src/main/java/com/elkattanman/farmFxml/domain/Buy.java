@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Buy implements Serializable {
 
     private static final long serialVersionUID = 1L;

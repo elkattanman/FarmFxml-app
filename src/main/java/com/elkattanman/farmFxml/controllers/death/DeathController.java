@@ -1,9 +1,8 @@
 package com.elkattanman.farmFxml.controllers.death;
 
 import com.elkattanman.farmFxml.callback.CallBack;
-import com.elkattanman.farmFxml.controllers.sale.SaleAddController;
 import com.elkattanman.farmFxml.domain.Death;
-import com.elkattanman.farmFxml.domain.Sale;
+import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.repositories.DeathRepository;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
@@ -18,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -51,6 +51,10 @@ public class DeathController implements Initializable, CallBack<Boolean, Death> 
     @FXML
     private JFXTextField searchTF;
 
+    @FXML
+    private Text infoTXT;
+
+
     private ObservableList<Death> list = FXCollections.observableArrayList();
     private final DeathRepository deathRepository;
 
@@ -71,6 +75,8 @@ public class DeathController implements Initializable, CallBack<Boolean, Death> 
         list.setAll(deathRepository.findAll());
         table.setItems(list);
         MakeMyFilter();
+        infoTXT.setText("العدد الكلى = "+ list.size() );
+
     }
 
 
@@ -79,21 +85,24 @@ public class DeathController implements Initializable, CallBack<Boolean, Death> 
         FilteredList<Death> filteredData = new FilteredList<>(list, s -> true);
 
         searchTF.textProperty().addListener(
-                (observable, oldValue, newValue) ->
-                        filteredData.setPredicate(death->{
+                (observable, oldValue, newValue) -> {
+                    filteredData.setPredicate(death -> {
 
-                            if(newValue == null || newValue.isEmpty() ){
-                                return true ;
-                            }
-                            String lowerCaseFilter = newValue.toLowerCase() ;
-                            if(death.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1 ){
-                                return true ;
-                            }
-                            return false ;
-                        }));
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+                        String lowerCaseFilter = newValue.toLowerCase();
+                        if (death.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    infoTXT.setText("العدد الكلى = "+ filteredData.size() );
+                });
 
         SortedList<Death> sorted = new SortedList<>(filteredData) ;
         sorted.comparatorProperty().bind(table.comparatorProperty());
+        infoTXT.setText("العدد الكلى = "+ sorted.size() );
         table.setItems(sorted);
     }
 

@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.MenuItem?>
@@ -26,7 +27,7 @@
             </Text>
         </top>
         <bottom>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 15; -fx-fill: -fx-primarytext;" text="العدد الكلى : 16 التكلفه الكليه للشراء" BorderPane.alignment="CENTER">
+            <Text fx:id="infoTXT" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text" text="العدد الكلى : 16 التكلفه الكليه للشراء" BorderPane.alignment="CENTER">
                 <font>
                     <Font name="Arial" size="12.0" />
                 </font>
@@ -50,10 +51,14 @@
                         <contextMenu>
                             <ContextMenu>
                                 <items>
-                                    <MenuItem mnemonicParsing="false" onAction="#refresh" text="Refresh" />
-                                    <MenuItem mnemonicParsing="false" onAction="#edit" text="Edit" />
-                                    <MenuItem mnemonicParsing="false" onAction="#remove" text="Remove" />
+                                    <MenuItem mnemonicParsing="false" onAction="#refresh" text="نحديث" />
+                                    <MenuItem mnemonicParsing="false" onAction="#edit" text="تعديل" />
+                                    <MenuItem mnemonicParsing="false" onAction="#remove" text="حذف" />
                                 </items>
+                                <styleClass>
+                                    <String fx:value="table-context" />
+                                    <String fx:value="colored-context-menu" />
+                                </styleClass>
                             </ContextMenu>
                         </contextMenu>
                     </TableView>

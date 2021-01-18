@@ -8,8 +8,9 @@
     <menus>
         <Menu mnemonicParsing="false" text="ملف">
             <items>
-                <MenuItem mnemonicParsing="false" onAction="#goSettings" text="Settings" />
-                <MenuItem mnemonicParsing="false" text="Exit" />
+                <MenuItem mnemonicParsing="false" onAction="#goSettings" text="الاعدادات" />
+            <MenuItem mnemonicParsing="false" onAction="#goCapital" text="تغير راس المال" />
+                <MenuItem mnemonicParsing="false" text="خروج" />
             </items>
         </Menu>
         <Menu mnemonicParsing="false" text="عرض">
@@ -28,7 +29,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="مساعده">
             <items>
-                <MenuItem mnemonicParsing="false" onAction="#goHelp" text="About" />
+                <MenuItem mnemonicParsing="false" onAction="#goHelp" text="عن المبرمج" />
             </items>
         </Menu>
     </menus>

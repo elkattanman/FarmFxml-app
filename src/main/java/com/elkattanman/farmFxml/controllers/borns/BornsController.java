@@ -2,6 +2,7 @@ package com.elkattanman.farmFxml.controllers.borns;
 
 import com.elkattanman.farmFxml.callback.CallBack;
 import com.elkattanman.farmFxml.domain.Born;
+import com.elkattanman.farmFxml.domain.Feed;
 import com.elkattanman.farmFxml.domain.Sale;
 import com.elkattanman.farmFxml.repositories.BornRepository;
 import com.elkattanman.farmFxml.util.AssistantUtil;
@@ -18,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -57,6 +59,8 @@ public class BornsController implements Initializable, CallBack<Boolean, Born> {
 
     private final BornRepository bornRepository;
 
+    public Text infoTXT;
+
     public BornsController(BornRepository bornRepository) {
         this.bornRepository = bornRepository;
     }
@@ -73,6 +77,7 @@ public class BornsController implements Initializable, CallBack<Boolean, Born> {
         initCol();
         list.setAll(bornRepository.findAll());
         table.setItems(list);
+        infoTXT.setText("العدد الكلى = "+ list.size());
         MakeMyFilter();
     }
 
@@ -82,21 +87,24 @@ public class BornsController implements Initializable, CallBack<Boolean, Born> {
         FilteredList<Born> filteredData = new FilteredList<>(list, s -> true);
 
         searchTF.textProperty().addListener(
-                (observable, oldValue, newValue) ->
-                        filteredData.setPredicate(born->{
+                (observable, oldValue, newValue) -> {
+                    filteredData.setPredicate(born -> {
 
-                            if(newValue == null || newValue.isEmpty() ){
-                                return true ;
-                            }
-                            String lowerCaseFilter = newValue.toLowerCase() ;
-                            if(born.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1 ){
-                                return true ;
-                            }
-                            return false ;
-                        }));
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+                        String lowerCaseFilter = newValue.toLowerCase();
+                        if (born.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    infoTXT.setText("العدد الكلى = "+ filteredData.size());
+                });
 
         SortedList<Born> sortedBorns = new SortedList<>(filteredData) ;
         sortedBorns.comparatorProperty().bind(table.comparatorProperty());
+
         table.setItems(sortedBorns);
     }
 

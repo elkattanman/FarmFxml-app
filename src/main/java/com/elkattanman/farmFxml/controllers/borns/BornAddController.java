@@ -3,7 +3,6 @@ package com.elkattanman.farmFxml.controllers.borns;
 
 import com.elkattanman.farmFxml.callback.CallBack;
 import com.elkattanman.farmFxml.domain.Born;
-import com.elkattanman.farmFxml.domain.Sale;
 import com.elkattanman.farmFxml.domain.Type;
 import com.elkattanman.farmFxml.repositories.BornRepository;
 import com.elkattanman.farmFxml.repositories.TypeRepository;
@@ -123,12 +122,12 @@ public class BornAddController implements Initializable {
 
     @FXML
     private void addProduct(ActionEvent event) {
-        if (!makeBorn())return;
         if (isInEditMode) {
             handleEditOperation();
             return;
         }
-
+        if (!makeBorn())return;
+        myBorn.getType().setTotal(myBorn.getNumber());
         Born save = bornRepository.save(myBorn);
         callBack.callBack(save);
         clearEntries();
@@ -153,7 +152,9 @@ public class BornAddController implements Initializable {
     }
 
     private void handleEditOperation() {
+        int old = myBorn.getNumber();
         if(!makeBorn())return;
+        myBorn.getType().setTotal(myBorn.getType().getTotal()-old+myBorn.getNumber());
         Born save = bornRepository.save(myBorn);
         callBack.callBack(save);
         AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Success operation", "تمت عمليه التعديل");

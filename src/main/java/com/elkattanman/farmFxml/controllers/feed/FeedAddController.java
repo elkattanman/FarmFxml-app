@@ -2,9 +2,10 @@ package com.elkattanman.farmFxml.controllers.feed;
 
 
 import com.elkattanman.farmFxml.callback.CallBack;
+import com.elkattanman.farmFxml.domain.Capital;
 import com.elkattanman.farmFxml.domain.Feed;
-import com.elkattanman.farmFxml.domain.Sale;
 import com.elkattanman.farmFxml.domain.Type;
+import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.repositories.FeedRepository;
 import com.elkattanman.farmFxml.repositories.TypeRepository;
 import com.elkattanman.farmFxml.util.AlertMaker;
@@ -54,12 +55,14 @@ public class FeedAddController implements Initializable {
 
     private final TypeRepository typeRepository;
     private final FeedRepository feedRepository;
+    private final CapitalRepository capitalRepository;
 
     private ObservableList<Type> typeList = FXCollections.observableArrayList();
 
-    public FeedAddController(TypeRepository typeRepository, FeedRepository feedRepository) {
+    public FeedAddController(TypeRepository typeRepository, FeedRepository feedRepository, CapitalRepository capitalRepository) {
         this.typeRepository = typeRepository;
         this.feedRepository = feedRepository;
+        this.capitalRepository = capitalRepository;
     }
 
     public void setCallBack(CallBack callBack) {
@@ -122,12 +125,16 @@ public class FeedAddController implements Initializable {
 
     @FXML
     private void addProduct(ActionEvent event) {
-        if (!makeFeed())return;
         if (isInEditMode) {
             handleEditOperation();
             return;
         }
-
+        if (!makeFeed())return;
+        Capital capital = capitalRepository.findById(1).get();
+        if(capital.getCurrentTotal()< myFeed.getCost()){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation", "لا يوجد راس مالى كافى. لديك "+ capital.getCurrentTotal());
+            return;
+        }
         Feed save = feedRepository.save(myFeed);
         callBack.callBack(save);
         clearEntries();
@@ -154,7 +161,13 @@ public class FeedAddController implements Initializable {
     }
 
     private void handleEditOperation() {
+        double oldCost=myFeed.getCost();
         if(!makeFeed())return;
+        Capital capital = capitalRepository.findById(1).get();
+        if(capital.getCurrentTotal()+oldCost < myFeed.getCost()){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation", "لا يوجد راس مالى كافى. لديك "+ capital.getCurrentTotal());
+            return;
+        }
         Feed save = feedRepository.save(myFeed);
         callBack.callBack(save);
         AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Success operation", "تمت عمليه التعديل");

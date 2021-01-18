@@ -5,7 +5,6 @@ import com.elkattanman.farmFxml.callback.CallBack;
 import com.elkattanman.farmFxml.domain.Type;
 import com.elkattanman.farmFxml.repositories.TypeRepository;
 import com.elkattanman.farmFxml.util.AlertMaker;
-import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;

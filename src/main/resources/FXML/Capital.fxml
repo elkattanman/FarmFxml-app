@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="rootContainer" prefHeight="178.0" prefWidth="581.0" stylesheets="@/CSS/dark-theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elkattanman.farmFxml.controllers.settings.CapitalController">
+   <children>
+      <TabPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="414.0" prefWidth="400.0">
+         <tabs>
+            <Tab closable="false" styleClass="settings-tab" text="تغير رأس المال">
+               <content>
+                  <AnchorPane fx:id="toBlur" id="AnchorPane" prefHeight="304.0" prefWidth="402.0" styleClass="custom-pane">
+                     <children>
+                        <VBox prefHeight="149.0" prefWidth="581.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <JFXTextField fx:id="currentTotalTF" alignment="CENTER_RIGHT" labelFloat="true" promptText="رأس المال الحالى">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </JFXTextField>
+                              <HBox alignment="CENTER" prefHeight="43.0" prefWidth="512.0" spacing="25.0">
+                                 <children>
+                                    <JFXButton onAction="#handleSaveButtonAction" prefHeight="100.0" prefWidth="100.0" text="تعديل" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+</StackPane>

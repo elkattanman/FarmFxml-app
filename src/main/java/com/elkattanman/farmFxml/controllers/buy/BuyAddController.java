@@ -3,8 +3,10 @@ package com.elkattanman.farmFxml.controllers.buy;
 
 import com.elkattanman.farmFxml.callback.CallBack;
 import com.elkattanman.farmFxml.domain.Buy;
+import com.elkattanman.farmFxml.domain.Capital;
 import com.elkattanman.farmFxml.domain.Type;
 import com.elkattanman.farmFxml.repositories.BuyRepository;
+import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.repositories.TypeRepository;
 import com.elkattanman.farmFxml.util.AlertMaker;
 import com.jfoenix.controls.JFXComboBox;
@@ -15,12 +17,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -63,12 +62,14 @@ public class BuyAddController implements Initializable {
 
     private final BuyRepository buyRepository;
     private final TypeRepository typeRepository;
+    private final CapitalRepository capitalRepository;
 
     private ObservableList<Type> typeList = FXCollections.observableArrayList();
 
-    public BuyAddController(BuyRepository buyRepository, TypeRepository typeRepository) {
+    public BuyAddController(BuyRepository buyRepository, TypeRepository typeRepository, CapitalRepository capitalRepository) {
         this.buyRepository = buyRepository;
         this.typeRepository = typeRepository;
+        this.capitalRepository = capitalRepository;
     }
 
     public void setCallBack(CallBack callBack) {
@@ -116,7 +117,6 @@ public class BuyAddController implements Initializable {
             AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Insufficient Data", "من فضلك ادخل جميع الحقول ");
             return false;
         }
-
         myBuy= Buy.builder()
                 .id(myBuy.getId())
                 .type(selectedItem)
@@ -129,12 +129,20 @@ public class BuyAddController implements Initializable {
 
     @FXML
     private void addProduct(ActionEvent event) {
-        if (!makeBuy())return;
         if (isInEditMode) {
             handleEditOperation();
             return;
         }
-
+        if (!makeBuy())return;
+        Capital capital = capitalRepository.findById(1).get();
+        myBuy.getType().setTotal(myBuy.getNumber());
+        if(capital.getCurrentTotal()< myBuy.getCost()){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation", "لا يوجد راس مالى كافى. لديك "+ capital.getCurrentTotal());
+            return;
+        }
+        capital.setBuy(capital.getBuy()+myBuy.getCost());
+        capital.setCurrentTotal(capital.getCurrentTotal()-myBuy.getCost());
+        capitalRepository.save(capital);
         Buy save = buyRepository.save(myBuy);
         callBack.callBack(save);
         clearEntries();
@@ -160,7 +168,17 @@ public class BuyAddController implements Initializable {
     }
 
     private void handleEditOperation() {
+        Buy old=myBuy;
+        double oldCost=myBuy.getCost();
         if(!makeBuy())return;
+        Capital capital = capitalRepository.findById(1).get();
+        if(capital.getCurrentTotal()+oldCost < myBuy.getCost()){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation", "لا يوجد راس مالى كافى. لديك "+ capital.getCurrentTotal());
+            return;
+        }
+        capital.setBuy(capital.getBuy()-old.getCost()+myBuy.getCost());
+        capital.setCurrentTotal(capital.getCurrentTotal()+old.getCost()-myBuy.getCost());
+        capitalRepository.save(capital);
         Buy save = buyRepository.save(myBuy);
         callBack.callBack(save);
         AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Success operation", "تمت عمليه التعديل");

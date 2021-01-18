@@ -1,9 +1,11 @@
 package com.elkattanman.farmFxml.controllers.spending;
 
 import com.elkattanman.farmFxml.callback.CallBack;
-import com.elkattanman.farmFxml.controllers.spending.SpendingAddController;
+import com.elkattanman.farmFxml.domain.Capital;
 import com.elkattanman.farmFxml.domain.Spending;
+import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.repositories.SpendingRepository;
+import com.elkattanman.farmFxml.util.AlertMaker;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
@@ -17,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -25,6 +28,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 @Component
@@ -53,12 +57,16 @@ public class SpendingController implements Initializable, CallBack<Boolean, Spen
 
     @FXML
     private JFXTextField searchTF;
+    @FXML
+    private Text infoTXT;
 
     private ObservableList<Spending> list = FXCollections.observableArrayList();
     private final SpendingRepository spendingRepository;
+    private final CapitalRepository capitalRepository;
 
-    public SpendingController(SpendingRepository spendingRepository) {
+    public SpendingController(SpendingRepository spendingRepository, CapitalRepository capitalRepository) {
         this.spendingRepository = spendingRepository;
+        this.capitalRepository = capitalRepository;
     }
 
     private void initCol() {
@@ -75,6 +83,9 @@ public class SpendingController implements Initializable, CallBack<Boolean, Spen
         list.setAll(spendingRepository.findAll());
         table.setItems(list);
         MakeMyFilter();
+        double total=0.0;
+        total = list.stream().mapToDouble(Spending::getCost).sum();
+        infoTXT.setText("العدد الكلى = "+ list.size() +" والتكلفه الكليه = "+ total);
     }
 
 
@@ -82,18 +93,22 @@ public class SpendingController implements Initializable, CallBack<Boolean, Spen
     private void MakeMyFilter(){
         FilteredList<Spending> filteredData = new FilteredList<>(list, s -> true);
         searchTF.textProperty().addListener(
-                (observable, oldValue, newValue) ->
-                        filteredData.setPredicate(spending->{
+                (observable, oldValue, newValue) -> {
+                    filteredData.setPredicate(spending -> {
 
-                            if(newValue == null || newValue.isEmpty() ){
-                                return true ;
-                            }
-                            String lowerCaseFilter = newValue.toLowerCase() ;
-                            if(spending.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1 ){
-                                return true ;
-                            }
-                            return false ;
-                        }));
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+                        String lowerCaseFilter = newValue.toLowerCase();
+                        if (spending.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    double total=0.0;
+                    total = filteredData.stream().mapToDouble(Spending::getCost).sum();
+                    infoTXT.setText("العدد الكلى = "+ filteredData.size() +" والتكلفه الكليه = "+ total);
+                });
 
         SortedList<Spending> sorted = new SortedList<>(filteredData) ;
         sorted.comparatorProperty().bind(table.comparatorProperty());
@@ -117,6 +132,10 @@ public class SpendingController implements Initializable, CallBack<Boolean, Spen
         Spending selectedItem = table.getSelectionModel().getSelectedItem();
         spendingRepository.delete(selectedItem);
         list.remove(selectedItem) ;
+        Capital capital = capitalRepository.findById(1).get();
+        capital.setSpending(capital.getSpending()-selectedItem.getCost());
+        capital.setCurrentTotal(capital.getCurrentTotal()+selectedItem.getCost());
+        capitalRepository.save(capital);
     }
     @FXML
     void refresh(ActionEvent event){
@@ -135,13 +154,20 @@ public class SpendingController implements Initializable, CallBack<Boolean, Spen
 
     @Override
     public Boolean callBack(Spending obj) {
+        Capital capital = capitalRepository.findById(1).get();
         for (int i=0 ; i < list.size(); ++i) {
             Spending object= list.get(i);
             if (object.getId().equals(obj.getId())) {
+                capital.setSpending(capital.getSpending()-object.getCost()+obj.getCost());
+                capital.setCurrentTotal(capital.getCurrentTotal()+object.getCost()-obj.getCost());
+                capitalRepository.save(capital);
                 list.set(i, obj);
                 return true;
             }
         }
+        capital.setSpending(capital.getSpending()+obj.getCost());
+        capital.setCurrentTotal(capital.getCurrentTotal()-obj.getCost());
+        capitalRepository.save(capital);
         list.add(obj) ;
         return true;
     }

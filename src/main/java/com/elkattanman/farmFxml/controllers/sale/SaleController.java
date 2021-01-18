@@ -1,7 +1,9 @@
 package com.elkattanman.farmFxml.controllers.sale;
 
 import com.elkattanman.farmFxml.callback.CallBack;
+import com.elkattanman.farmFxml.domain.Capital;
 import com.elkattanman.farmFxml.domain.Sale;
+import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.repositories.SaleRepository;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
@@ -16,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -52,12 +55,17 @@ public class SaleController implements Initializable, CallBack<Boolean, Sale> {
 
     @FXML
     private JFXTextField searchTF;
+    @FXML
+    private Text infoTXT;
 
     private ObservableList<Sale> list = FXCollections.observableArrayList();
     private final SaleRepository saleRepository;
+    private final CapitalRepository capitalRepository;
 
-    public SaleController(SaleRepository saleRepository) {
+
+    public SaleController(SaleRepository saleRepository, CapitalRepository capitalRepository) {
         this.saleRepository = saleRepository;
+        this.capitalRepository = capitalRepository;
     }
 
     private void initCol() {
@@ -74,6 +82,9 @@ public class SaleController implements Initializable, CallBack<Boolean, Sale> {
         list.setAll(saleRepository.findAll());
         table.setItems(list);
         MakeMyFilter();
+        double total=0.0;
+        total = list.stream().mapToDouble(Sale::getCost).sum();
+        infoTXT.setText("العدد الكلى = "+ list.size() +" والتكلفه الكليه = "+ total);
     }
 
 
@@ -82,21 +93,28 @@ public class SaleController implements Initializable, CallBack<Boolean, Sale> {
         FilteredList<Sale> filteredData = new FilteredList<>(list, s -> true);
 
         searchTF.textProperty().addListener(
-                (observable, oldValue, newValue) ->
-                        filteredData.setPredicate(sale->{
+                (observable, oldValue, newValue) -> {
+                    filteredData.setPredicate(sale -> {
 
-            if(newValue == null || newValue.isEmpty() ){
-                return true ;
-            }
-            String lowerCaseFilter = newValue.toLowerCase() ;
-            if(sale.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1 ){
-                return true ;
-            }
-            return false ;
-        }));
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+                        String lowerCaseFilter = newValue.toLowerCase();
+                        if (sale.getType().getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                            return true;
+                        }
+                        return false;
+                    });
+                    double total=0.0;
+                    total = filteredData.stream().mapToDouble(Sale::getCost).sum();
+                    infoTXT.setText("العدد الكلى = "+ filteredData.size() +" والتكلفه الكليه = "+ total);
+                });
 
         SortedList<Sale> sorted = new SortedList<>(filteredData) ;
         sorted.comparatorProperty().bind(table.comparatorProperty());
+        double total=0.0;
+        total = sorted.stream().mapToDouble(Sale::getCost).sum();
+        infoTXT.setText("العدد الكلى = "+ sorted.size() +" والتكلفه الكليه = "+ total);
         table.setItems(sorted);
     }
 
@@ -117,6 +135,10 @@ public class SaleController implements Initializable, CallBack<Boolean, Sale> {
         Sale selectedItem = table.getSelectionModel().getSelectedItem();
         saleRepository.delete(selectedItem);
         list.remove(selectedItem) ;
+        Capital capital = capitalRepository.findById(1).get();
+        capital.setSales(capital.getSales()-selectedItem.getCost());
+        capital.setCurrentTotal(capital.getCurrentTotal()-selectedItem.getCost());
+        capitalRepository.save(capital);
     }
     @FXML
     void refresh(ActionEvent event){
@@ -135,13 +157,20 @@ public class SaleController implements Initializable, CallBack<Boolean, Sale> {
 
     @Override
     public Boolean callBack(Sale obj) {
+        Capital capital = capitalRepository.findById(1).get();
         for (int i=0 ; i < list.size(); ++i) {
             Sale object= list.get(i);
             if (object.getId().equals(obj.getId())) {
+                capital.setSales(capital.getSales()-object.getCost()+obj.getCost());
+                capital.setCurrentTotal(capital.getCurrentTotal()-object.getCost()+obj.getCost());
+                capitalRepository.save(capital);
                 list.set(i, obj);
                 return true;
             }
         }
+        capital.setSales(capital.getSales()+obj.getCost());
+        capital.setCurrentTotal(capital.getCurrentTotal()+obj.getCost());
+        capitalRepository.save(capital);
         list.add(obj) ;
         return true;
     }

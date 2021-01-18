@@ -50,8 +50,7 @@ public class Type implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "type_info_id")
-    private TypeInfo typeInfo;
+    @Column(name = "total")
+    private int total=0;
 
 }

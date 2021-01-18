@@ -2,12 +2,13 @@ package com.elkattanman.farmFxml.controllers.spending;
 
 
 import com.elkattanman.farmFxml.callback.CallBack;
+import com.elkattanman.farmFxml.domain.Capital;
 import com.elkattanman.farmFxml.domain.Spending;
 import com.elkattanman.farmFxml.domain.Type;
+import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.repositories.SpendingRepository;
 import com.elkattanman.farmFxml.repositories.TypeRepository;
 import com.elkattanman.farmFxml.util.AlertMaker;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
@@ -49,17 +50,19 @@ public class SpendingAddController implements Initializable {
     private JFXTextField nameTF, priceTF;
 
     private Boolean isInEditMode = Boolean.FALSE;
-    private CallBack callBack;
+    private CallBack<Boolean,Spending> callBack;
     private Spending mySpending;
 
     private final TypeRepository typeRepository;
     private final SpendingRepository spendingRepository;
+    private final CapitalRepository capitalRepository;
 
     private ObservableList<Type> typeList = FXCollections.observableArrayList();
 
-    public SpendingAddController(TypeRepository typeRepository, SpendingRepository spendingRepository) {
+    public SpendingAddController(TypeRepository typeRepository, SpendingRepository spendingRepository, CapitalRepository capitalRepository) {
         this.typeRepository = typeRepository;
         this.spendingRepository = spendingRepository;
+        this.capitalRepository = capitalRepository;
     }
 
     public void setCallBack(CallBack callBack) {
@@ -120,14 +123,18 @@ public class SpendingAddController implements Initializable {
 
     @FXML
     private void addProduct(ActionEvent event) {
-        if (!makeSpending())return;
         if (isInEditMode) {
             handleEditOperation();
             return;
         }
-
+        if (!makeSpending())return;
+        Capital capital = capitalRepository.findById(1).get();
+        if(capital.getCurrentTotal()< mySpending.getCost()){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation", "لا يوجد راس مالى كافى. لديك "+ capital.getCurrentTotal());
+            return;
+        }
         Spending save = spendingRepository.save(mySpending);
-        callBack.callBack(save);
+        if(!callBack.callBack(save)) return;
         clearEntries();
         AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Success operation", "تمت عمليه الادخال");
     }
@@ -151,7 +158,13 @@ public class SpendingAddController implements Initializable {
     }
 
     private void handleEditOperation() {
+        double oldCost=mySpending.getCost();
         if(!makeSpending())return;
+        Capital capital = capitalRepository.findById(1).get();
+        if(capital.getCurrentTotal()+oldCost < mySpending.getCost()){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation", "لا يوجد راس مالى كافى. لديك "+ capital.getCurrentTotal());
+            return;
+        }
         Spending save = spendingRepository.save(mySpending);
         callBack.callBack(save);
         AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Success operation", "تمت عمليه التعديل");

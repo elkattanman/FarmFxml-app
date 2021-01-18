@@ -1,8 +1,6 @@
 package com.elkattanman.farmFxml.controllers.types;
 
 import com.elkattanman.farmFxml.callback.CallBack;
-import com.elkattanman.farmFxml.controllers.borns.BornAddController;
-import com.elkattanman.farmFxml.domain.Born;
 import com.elkattanman.farmFxml.domain.Type;
 import com.elkattanman.farmFxml.repositories.TypeRepository;
 import com.elkattanman.farmFxml.util.AssistantUtil;
@@ -14,11 +12,11 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -44,7 +42,12 @@ public class TypesController implements Initializable, CallBack<Boolean, Type> {
     private TableColumn<Type, String> nameCol;
 
     @FXML
+    private TableColumn<Type, Integer> cntCol;
+
+    @FXML
     private JFXTextField searchTF;
+    @FXML
+    private Text infoTXT;
 
     private ObservableList<Type> list = FXCollections.observableArrayList();
 
@@ -57,6 +60,7 @@ public class TypesController implements Initializable, CallBack<Boolean, Type> {
     private void initCol() {
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cntCol.setCellValueFactory(new PropertyValueFactory<>("total"));
     }
 
     @Override
@@ -65,6 +69,7 @@ public class TypesController implements Initializable, CallBack<Boolean, Type> {
         list.setAll(typeRepository.findAll());
         table.setItems(list);
         MakeMyFilter();
+        infoTXT.setText("العدد الكلى = "+ list.size());
     }
 
 
@@ -84,12 +89,11 @@ public class TypesController implements Initializable, CallBack<Boolean, Type> {
                 }
                 return false ;
             });
-
+            infoTXT.setText("العدد الكلى = "+ filteredData.size());
         });
-
-        SortedList<Type> sortedBorns = new SortedList<>(filteredData) ;
-        sortedBorns.comparatorProperty().bind(table.comparatorProperty());
-        table.setItems(sortedBorns);
+        SortedList<Type> sorted = new SortedList<>(filteredData) ;
+        sorted.comparatorProperty().bind(table.comparatorProperty());
+        table.setItems(sorted);
     }
 
 
