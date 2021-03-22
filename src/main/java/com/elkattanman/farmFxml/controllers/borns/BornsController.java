@@ -2,9 +2,12 @@ package com.elkattanman.farmFxml.controllers.borns;
 
 import com.elkattanman.farmFxml.callback.CallBack;
 import com.elkattanman.farmFxml.domain.Born;
+import com.elkattanman.farmFxml.domain.Death;
 import com.elkattanman.farmFxml.domain.Feed;
 import com.elkattanman.farmFxml.domain.Sale;
 import com.elkattanman.farmFxml.repositories.BornRepository;
+import com.elkattanman.farmFxml.repositories.TypeRepository;
+import com.elkattanman.farmFxml.util.AlertMaker;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
@@ -19,6 +22,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -28,6 +34,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 @Component
@@ -35,7 +42,6 @@ import java.util.ResourceBundle;
 public class BornsController implements Initializable, CallBack<Boolean, Born> {
     @Autowired
     private FxWeaver fxWeaver;
-
 
     @FXML
     private TableView<Born> table;
@@ -58,10 +64,11 @@ public class BornsController implements Initializable, CallBack<Boolean, Born> {
     private ObservableList<Born> list = FXCollections.observableArrayList();
 
     private final BornRepository bornRepository;
-
+    private final TypeRepository typeRepository;
     public Text infoTXT;
 
-    public BornsController(BornRepository bornRepository) {
+    public BornsController(BornRepository bornRepository , TypeRepository typeRepository) {
+        this.typeRepository = typeRepository ;
         this.bornRepository = bornRepository;
     }
 
@@ -77,7 +84,8 @@ public class BornsController implements Initializable, CallBack<Boolean, Born> {
         initCol();
         list.setAll(bornRepository.findAll());
         table.setItems(list);
-        infoTXT.setText("العدد الكلى = "+ list.size());
+        int total = list.stream().mapToInt(Born::getNumber).sum();
+        infoTXT.setText("العدد الكلى = "+ list.size() +" والاجمالى = "+ total);
         MakeMyFilter();
     }
 
@@ -99,12 +107,12 @@ public class BornsController implements Initializable, CallBack<Boolean, Born> {
                         }
                         return false;
                     });
-                    infoTXT.setText("العدد الكلى = "+ filteredData.size());
+                    int total = filteredData.stream().mapToInt(Born::getNumber).sum();
+                    infoTXT.setText("العدد الكلى = "+ filteredData.size() +" والاجمالى = "+ total);
                 });
 
         SortedList<Born> sortedBorns = new SortedList<>(filteredData) ;
         sortedBorns.comparatorProperty().bind(table.comparatorProperty());
-
         table.setItems(sortedBorns);
     }
 
@@ -123,6 +131,13 @@ public class BornsController implements Initializable, CallBack<Boolean, Born> {
     @FXML
     void remove(ActionEvent event){
         Born selectedItem = table.getSelectionModel().getSelectedItem();
+        int oldTotal = selectedItem.getType().getTotal() ;
+        if(selectedItem.getType().getTotal() - selectedItem.getNumber() < 0 ){
+            AlertMaker.showErrorMessage("Faild operation",   "لا يمكن و لديك "+ oldTotal);
+            return;
+        }
+        selectedItem.getType().setTotal( selectedItem.getType().getTotal() - selectedItem.getNumber() );
+        typeRepository.save(selectedItem.getType()) ;
         bornRepository.delete(selectedItem);
         list.remove(selectedItem) ;
     }

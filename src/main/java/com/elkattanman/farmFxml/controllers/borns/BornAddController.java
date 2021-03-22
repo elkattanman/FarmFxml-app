@@ -127,7 +127,8 @@ public class BornAddController implements Initializable {
             return;
         }
         if (!makeBorn())return;
-        myBorn.getType().setTotal(myBorn.getNumber());
+        myBorn.getType().setTotal(myBorn.getNumber() + myBorn.getType().getTotal()  );
+        typeRepository.save(myBorn.getType()) ;
         Born save = bornRepository.save(myBorn);
         callBack.callBack(save);
         clearEntries();
@@ -154,7 +155,15 @@ public class BornAddController implements Initializable {
     private void handleEditOperation() {
         int old = myBorn.getNumber();
         if(!makeBorn())return;
+        int oldTotal = myBorn.getType().getTotal() ;
+        int newVal = myBorn.getType().getTotal()-old+myBorn.getNumber() ;
+
+        if(newVal < 0 ){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation",   "لا يمكن و لديك "+ oldTotal);
+            return;
+        }
         myBorn.getType().setTotal(myBorn.getType().getTotal()-old+myBorn.getNumber());
+        typeRepository.save(myBorn.getType()) ;
         Born save = bornRepository.save(myBorn);
         callBack.callBack(save);
         AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Success operation", "تمت عمليه التعديل");

@@ -57,7 +57,7 @@
                                              <children>
                                                 <JFXButton contentDisplay="TOP" onAction="#goToTypes" prefHeight="500.0" prefWidth="1000.0" styleClass="dialog-button" text="الاصناف" textFill="WHITE">
                                                    <graphic>
-                                                      <FontAwesomeIconView glyphName="CHECK" size="65" />
+                                                      <FontAwesomeIconView glyphName="FIRE" size="65" />
                                                    </graphic>
                                                    <font>
                                                       <Font size="28.0" />
@@ -65,7 +65,7 @@
                                                 </JFXButton>
                                                 <JFXButton contentDisplay="TOP" onAction="#goToBuy" prefHeight="500.0" prefWidth="1000.0" styleClass="dialog-button" text="الشراء" textFill="WHITE" GridPane.columnIndex="1">
                                                    <graphic>
-                                                      <FontAwesomeIconView glyphName="CHECK" size="65" />
+                                                      <FontAwesomeIconView glyphName="FOLDER" size="65" />
                                                    </graphic>
                                                    <font>
                                                       <Font size="28.0" />
@@ -73,7 +73,7 @@
                                                 </JFXButton>
                                                 <JFXButton contentDisplay="TOP" onAction="#goToBorns" prefHeight="500.0" prefWidth="1000.0" styleClass="dialog-button" text="المواليد" textFill="WHITE" GridPane.rowIndex="1">
                                                    <graphic>
-                                                      <FontAwesomeIconView glyphName="BOOK" size="65" />
+                                                      <FontAwesomeIconView glyphName="CHILD" size="65" />
                                                    </graphic>
                                                    <font>
                                                       <Font size="28.0" />
@@ -81,7 +81,7 @@
                                                 </JFXButton>
                                                 <JFXButton contentDisplay="TOP" onAction="#goToTreatment" prefHeight="500.0" prefWidth="1000.0" styleClass="dialog-button" text="العلاج" textFill="WHITE" GridPane.rowIndex="2">
                                                    <graphic>
-                                                      <FontAwesomeIconView glyphName="CHECK" size="65" />
+                                                      <FontAwesomeIconView glyphName="PENCIL" size="65" />
                                                    </graphic>
                                                    <font>
                                                       <Font size="28.0" />
@@ -89,7 +89,7 @@
                                                 </JFXButton>
                                                 <JFXButton contentDisplay="TOP" onAction="#goToDeath" prefHeight="500.0" prefWidth="1000.0" styleClass="dialog-button" text="النفوق" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <graphic>
-                                                      <FontAwesomeIconView glyphName="BOOK" size="65" />
+                                                      <FontAwesomeIconView glyphName="TREE" size="65" />
                                                    </graphic>
                                                    <font>
                                                       <Font size="28.0" />
@@ -97,7 +97,7 @@
                                                 </JFXButton>
                                                 <JFXButton contentDisplay="TOP" onAction="#goToReserve" prefHeight="500.0" prefWidth="1000.0" styleClass="dialog-button" text="الحجز" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <graphic>
-                                                      <FontAwesomeIconView glyphName="CHECK" size="65" />
+                                                      <FontAwesomeIconView glyphName="BOOK" size="65" />
                                                    </graphic>
                                                    <font>
                                                       <Font size="28.0" />
@@ -105,7 +105,7 @@
                                                 </JFXButton>
                                                 <JFXButton contentDisplay="TOP" onAction="#goToSale" prefHeight="500.0" prefWidth="1000.0" styleClass="dialog-button" text="البيع" textFill="WHITE" GridPane.columnIndex="2">
                                                    <graphic>
-                                                      <FontAwesomeIconView glyphName="CHECK" size="65" />
+                                                      <FontAwesomeIconView glyphName="BULLHORN" size="65" />
                                                    </graphic>
                                                    <font>
                                                       <Font size="28.0" />
@@ -113,7 +113,7 @@
                                                 </JFXButton>
                                                 <JFXButton contentDisplay="TOP" onAction="#goToFeed" prefHeight="500.0" prefWidth="1000.0" styleClass="dialog-button" text="الاعلاف" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                                    <graphic>
-                                                      <FontAwesomeIconView glyphName="BOOK" size="65" />
+                                                      <FontAwesomeIconView glyphName="LEAF" size="65" />
                                                    </graphic>
                                                    <font>
                                                       <Font size="28.0" />
@@ -121,7 +121,7 @@
                                                 </JFXButton>
                                                 <JFXButton contentDisplay="TOP" onAction="#goToSpending" prefHeight="500.0" prefWidth="1000.0" styleClass="dialog-button" text="المصاريف" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                                    <graphic>
-                                                      <FontAwesomeIconView glyphName="CHECK" size="65" />
+                                                      <FontAwesomeIconView glyphName="MONEY" size="65" />
                                                    </graphic>
                                                    <font>
                                                       <Font size="28.0" />
@@ -140,7 +140,7 @@
                                  <children>
                                     <PieChart fx:id="gained" layoutX="58.0" layoutY="92.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="100.0" />
                                     <PieChart fx:id="paid" layoutX="686.0" layoutY="92.0" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="100.0" />
-                                    <Text layoutX="245.0" layoutY="515.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 40pt;" styleClass="main-text" text="المكسب" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="250.0">
+                                    <Text layoutX="287.0" layoutY="565.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 40pt;" styleClass="main-text" text="المكسب" AnchorPane.bottomAnchor="30.697917938232422" AnchorPane.leftAnchor="287.0">
                                        <font>
                                           <Font name="Arial" size="12.0" />
                                        </font>
@@ -150,12 +150,12 @@
                                           <Font name="Arial" size="12.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="gainTXT" layoutX="103.0" layoutY="542.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 40pt;" styleClass="main-text" text="المكسب" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="106.0">
+                                    <Text fx:id="gainTXT" layoutX="30.0" layoutY="542.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 40pt;" styleClass="main-text" text="المكسب" wrappingWidth="206.46875" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0">
                                        <font>
                                           <Font name="Arial" size="12.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="paidTXT" layoutX="674.0" layoutY="542.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 40pt;" styleClass="main-text" text="المصروفات" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="320.0">
+                                    <Text fx:id="paidTXT" layoutX="674.0" layoutY="542.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 40pt;" styleClass="main-text" text="المصروفات" wrappingWidth="278.9010467529297" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="320.0">
                                        <font>
                                           <Font name="Arial" size="12.0" />
                                        </font>

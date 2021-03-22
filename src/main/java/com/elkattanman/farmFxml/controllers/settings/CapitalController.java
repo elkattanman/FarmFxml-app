@@ -57,15 +57,20 @@ public class CapitalController implements Initializable {
             AlertMaker.showMaterialDialog(rootContainer, toBlur, new ArrayList<>(), "قيمه غير صحيحه", "برجاء ادخال قيمه صحيحه");
             return;
         }
-        Capital one = capitalRepository.findById(1).get();
-        if(one.getTotalPayments()>current){
-            AlertMaker.showMaterialDialog(rootContainer, toBlur, new ArrayList<>(), "قيمه صغيره", "برجاء ادخال قيمه اكبر من الديون "+ one.getTotalPayments());
-            return;
+        try {
+            Capital one = capitalRepository.findById(1).get();
+            if (one.getTotalPayments() > current) {
+                AlertMaker.showMaterialDialog(rootContainer, toBlur, new ArrayList<>(), "قيمه صغيره", "برجاء ادخال قيمه اكبر من الديون " + one.getTotalPayments());
+                return;
+            }
+            one.setBalance(current);
+            one.setCurrentTotal(current);
+            capitalRepository.save(one);
+            AlertMaker.showMaterialDialog(rootContainer, toBlur, new ArrayList<>(), "Success operation", "تمت عمليه التعديل");
+        }catch(Exception e ){
+            AlertMaker.showMaterialDialog(rootContainer, toBlur, new ArrayList<>(), "NOP operation", e.toString());
+
         }
-        one.setBalance(current);
-        one.setCurrentTotal(current);
-        capitalRepository.save(one);
-        AlertMaker.showMaterialDialog(rootContainer, toBlur, new ArrayList<>(), "Success operation", "تمت عمليه التعديل");
     }
 
     private Stage getStage() {
@@ -73,8 +78,12 @@ public class CapitalController implements Initializable {
     }
 
     private void initDefaultValues() {
-        Capital one = capitalRepository.findById(1).get();
-        currentTotalTF.setText(""+one.getCurrentTotal());
+        try {
+            Capital one = capitalRepository.findById(1).get();
+            currentTotalTF.setText("" + one.getCurrentTotal());
+        }catch(Exception e ){
+            AlertMaker.showMaterialDialog(rootContainer, toBlur, new ArrayList<>(), "NOP operation", e.toString());
+        }
     }
 
 }

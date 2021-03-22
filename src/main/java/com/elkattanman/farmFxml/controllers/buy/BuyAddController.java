@@ -107,7 +107,7 @@ public class BuyAddController implements Initializable {
         double price=0;
         try {
             num = Integer.parseInt(StringUtils.trimToEmpty(numTF.getText()));
-            price = Double.parseDouble(StringUtils.trimToEmpty(priceTF.getText()));
+            price = Double.parseDouble(StringUtils.trimToEmpty(priceTF.getText()))  ;
         }catch (Exception ex){
             AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Insufficient Data", "من فضلك ادخل قيمه رقميه ");
             return false;
@@ -117,6 +117,7 @@ public class BuyAddController implements Initializable {
             AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Insufficient Data", "من فضلك ادخل جميع الحقول ");
             return false;
         }
+
         myBuy= Buy.builder()
                 .id(myBuy.getId())
                 .type(selectedItem)
@@ -135,11 +136,13 @@ public class BuyAddController implements Initializable {
         }
         if (!makeBuy())return;
         Capital capital = capitalRepository.findById(1).get();
-        myBuy.getType().setTotal(myBuy.getNumber());
+
         if(capital.getCurrentTotal()< myBuy.getCost()){
             AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation", "لا يوجد راس مالى كافى. لديك "+ capital.getCurrentTotal());
             return;
         }
+        myBuy.getType().setTotal(myBuy.getNumber() + myBuy.getType().getTotal() );
+        typeRepository.save(myBuy.getType()) ;
         capital.setBuy(capital.getBuy()+myBuy.getCost());
         capital.setCurrentTotal(capital.getCurrentTotal()-myBuy.getCost());
         capitalRepository.save(capital);
@@ -168,14 +171,29 @@ public class BuyAddController implements Initializable {
     }
 
     private void handleEditOperation() {
+        System.out.println("ediit add " + myBuy.getType().getTotal());
         Buy old=myBuy;
         double oldCost=myBuy.getCost();
+        int oldNumber =myBuy.getNumber() ;
+
         if(!makeBuy())return;
         Capital capital = capitalRepository.findById(1).get();
         if(capital.getCurrentTotal()+oldCost < myBuy.getCost()){
             AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation", "لا يوجد راس مالى كافى. لديك "+ capital.getCurrentTotal());
             return;
         }
+        //amr alaa
+
+        if(old.getType().getTotal() - oldNumber < 0 ){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation",   "لا يمكن و لديك "+ old.getType().getTotal());
+            return;
+        }
+        old.getType().setTotal( old.getType().getTotal() - oldNumber );
+        typeRepository.save(old.getType()) ;
+        myBuy.getType().setTotal(old.getType().getTotal());
+        myBuy.getType().setTotal( myBuy.getType().getTotal() + myBuy.getNumber());
+        typeRepository.save(myBuy.getType()) ;
+        //end amr alaa
         capital.setBuy(capital.getBuy()-old.getCost()+myBuy.getCost());
         capital.setCurrentTotal(capital.getCurrentTotal()+old.getCost()-myBuy.getCost());
         capitalRepository.save(capital);

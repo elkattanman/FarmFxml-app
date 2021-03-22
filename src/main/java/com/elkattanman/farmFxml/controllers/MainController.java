@@ -84,7 +84,7 @@ public class MainController implements Initializable {
         data1.add(new PieChart.Data("مبيعات ( "+capital.getSales()+")",capital.getSales()));
         data1.add(new PieChart.Data("حجز ( "+capital.getReserve()+")",capital.getReserve()));
         gained.setData(data1);
-        gainTXT.setText(""+capital.getTotalGain());
+        gainTXT.setText(""+ (capital.getSales() + capital.getReserve() ));
 
         ObservableList<PieChart.Data> data2 = FXCollections.observableArrayList();
         data2.add(new PieChart.Data("الشراء ( "+capital.getBuy()+")",capital.getBuy()));
@@ -92,7 +92,7 @@ public class MainController implements Initializable {
         data2.add(new PieChart.Data("المصاريف ( "+capital.getSpending()+")",capital.getSpending()));
         data2.add(new PieChart.Data("العلاج ( "+capital.getTreatment()+")",capital.getTreatment()));
         paid.setData(data2);
-        paidTXT.setText(""+capital.getTotalPayments());
+        paidTXT.setText(""+( capital.getBuy() + capital.getFeed() +capital.getSpending() + capital.getTreatment()  ));
 
 
     }

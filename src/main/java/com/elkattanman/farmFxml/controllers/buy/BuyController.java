@@ -5,6 +5,8 @@ import com.elkattanman.farmFxml.domain.Buy;
 import com.elkattanman.farmFxml.domain.Capital;
 import com.elkattanman.farmFxml.repositories.BuyRepository;
 import com.elkattanman.farmFxml.repositories.CapitalRepository;
+import com.elkattanman.farmFxml.repositories.TypeRepository;
+import com.elkattanman.farmFxml.util.AlertMaker;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
@@ -18,6 +20,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -28,6 +32,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 @Component
@@ -35,8 +40,6 @@ import java.util.ResourceBundle;
 public class BuyController implements Initializable, CallBack<Boolean, Buy> {
     @Autowired
     private FxWeaver fxWeaver;
-
-
     @FXML
     private TableView<Buy> table;
 
@@ -65,17 +68,18 @@ public class BuyController implements Initializable, CallBack<Boolean, Buy> {
 
     private final BuyRepository buyRepository;
     private final CapitalRepository capitalRepository;
+    private final TypeRepository typeRepository;
 
-    public BuyController(BuyRepository buyRepository, CapitalRepository capitalRepository) {
+    public BuyController(BuyRepository buyRepository,TypeRepository typeRepository, CapitalRepository capitalRepository) {
         this.buyRepository = buyRepository;
         this.capitalRepository = capitalRepository;
+        this.typeRepository = typeRepository ;
     }
 
     private void initCol() {
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("typeName"));
         dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-        numCol.setCellValueFactory(new PropertyValueFactory<>("number"));
         numCol.setCellValueFactory(new PropertyValueFactory<>("number"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("cost"));
     }
@@ -133,12 +137,22 @@ public class BuyController implements Initializable, CallBack<Boolean, Buy> {
     @FXML
     void remove(ActionEvent event){
         Buy selectedItem = table.getSelectionModel().getSelectedItem();
+        //amr alaa
+        int oldTotal = selectedItem.getType().getTotal() ;
+
+        if(selectedItem.getType().getTotal() - selectedItem.getNumber() < 0 ){
+            AlertMaker.showErrorMessage("Faild operation",   "لا يمكن و لديك "+ oldTotal);
+            return;
+        }
+        selectedItem.getType().setTotal( selectedItem.getType().getTotal() - selectedItem.getNumber() );
+        typeRepository.save(selectedItem.getType()) ;
         buyRepository.delete(selectedItem);
         list.remove(selectedItem) ;
         Capital capital = capitalRepository.findById(1).get();
         capital.setBuy(capital.getBuy()-selectedItem.getCost());
         capital.setCurrentTotal(capital.getCurrentTotal()+selectedItem.getCost());
         capitalRepository.save(capital);
+
     }
     @FXML
     void refresh(ActionEvent event){

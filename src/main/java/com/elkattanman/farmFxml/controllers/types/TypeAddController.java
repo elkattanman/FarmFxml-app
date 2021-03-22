@@ -84,6 +84,7 @@ public class TypeAddController implements Initializable {
                 .reserve(reserveCB.isSelected())
                 .treatment(treatmentCB.isSelected())
                 .spending(spendingCB.isSelected())
+                .total(myType.getTotal())
                 .build();
         return true;
     }
@@ -112,6 +113,7 @@ public class TypeAddController implements Initializable {
 
     public void inflateUI(Type type) {
         myType=type;
+        System.out.println("myType :: :" + myType.getTotal() );
         nameTF.setText(type.getName());
         saleCB.setSelected(type.getSale());
         buyCB.setSelected(type.getBuy());

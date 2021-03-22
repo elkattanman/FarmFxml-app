@@ -120,12 +120,20 @@ public class DeathAddController implements Initializable {
 
     @FXML
     private void addProduct(ActionEvent event) {
-        if (!makeBuy())return;
+
         if (isInEditMode) {
             handleEditOperation();
             return;
         }
+        if (!makeBuy())return;
+        int oldTotal = myDeath.getType().getTotal() ;
 
+        if(myDeath.getType().getTotal() - myDeath.getNumber() < 0 ){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation",   "لا يمكن و لديك "+ oldTotal);
+            return;
+        }
+        myDeath.getType().setTotal( myDeath.getType().getTotal() - myDeath.getNumber() );
+        typeRepository.save(myDeath.getType()) ;
         Death save = deathRepository.save(myDeath);
         callBack.callBack(save);
         clearEntries();
@@ -150,7 +158,24 @@ public class DeathAddController implements Initializable {
     }
 
     private void handleEditOperation() {
+        Death old = myDeath ;
+        int oldNumber = myDeath.getNumber() ;
         if(!makeBuy())return;
+
+        //amr alaa
+        old.getType().setTotal( old.getType().getTotal() + oldNumber );
+        typeRepository.save(old.getType()) ;
+        myDeath.getType().setTotal(old.getType().getTotal());
+        int oldTotal = old.getType().getTotal() ;
+
+        if(myDeath.getType().getTotal() - myDeath.getNumber() < 0 ){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation",   "لا يمكن و لديك "+ oldTotal);
+            return;
+        }
+        myDeath.getType().setTotal( myDeath.getType().getTotal() - myDeath.getNumber() );
+        typeRepository.save(myDeath.getType()) ;
+        //end amr alaa
+
         Death save = deathRepository.save(myDeath);
         callBack.callBack(save);
         AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Success operation", "تمت عمليه التعديل");

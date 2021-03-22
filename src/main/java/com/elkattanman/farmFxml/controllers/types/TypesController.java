@@ -3,6 +3,7 @@ package com.elkattanman.farmFxml.controllers.types;
 import com.elkattanman.farmFxml.callback.CallBack;
 import com.elkattanman.farmFxml.domain.Type;
 import com.elkattanman.farmFxml.repositories.TypeRepository;
+import com.elkattanman.farmFxml.util.AlertMaker;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
@@ -100,6 +101,7 @@ public class TypesController implements Initializable, CallBack<Boolean, Type> {
     @FXML
     void edit(ActionEvent event) {
         Type selectedItem = table.getSelectionModel().getSelectedItem();
+
         FxControllerAndView<TypeAddController, Parent> load = fxWeaver.load(TypeAddController.class);
         TypeAddController controller = load.getController();
         controller.setCallBack(this);
@@ -110,9 +112,14 @@ public class TypesController implements Initializable, CallBack<Boolean, Type> {
 
     @FXML
     void remove(ActionEvent event){
-        Type selectedItem = table.getSelectionModel().getSelectedItem();
-        typeRepository.delete(selectedItem);
-        list.remove(selectedItem) ;
+        try {
+            Type selectedItem = table.getSelectionModel().getSelectedItem();
+            typeRepository.delete(selectedItem);
+            list.remove(selectedItem);
+        }catch(Exception e ){
+            AlertMaker.showErrorMessage("Faild operation",   "لا يمكن و هذا النوع مدرج بعمليات ");
+            return;
+        }
     }
     @FXML
     void refresh(ActionEvent event){

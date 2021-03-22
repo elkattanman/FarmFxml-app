@@ -10,7 +10,6 @@
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#goSettings" text="الاعدادات" />
             <MenuItem mnemonicParsing="false" onAction="#goCapital" text="تغير راس المال" />
-                <MenuItem mnemonicParsing="false" text="خروج" />
             </items>
         </Menu>
         <Menu mnemonicParsing="false" text="عرض">
@@ -25,11 +24,6 @@
                 <MenuItem mnemonicParsing="false" onAction="#goToReserve" text="عرض الحجز" />
                 <MenuItem mnemonicParsing="false" onAction="#goToSpending" text="عرض المصاريف" />
                 <MenuItem mnemonicParsing="false" onAction="#goToTreatment" text="عرض الادويه" />
-            </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="مساعده">
-            <items>
-                <MenuItem mnemonicParsing="false" onAction="#goHelp" text="عن المبرمج" />
             </items>
         </Menu>
     </menus>

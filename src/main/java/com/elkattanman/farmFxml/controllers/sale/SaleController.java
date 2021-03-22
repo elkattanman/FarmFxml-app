@@ -5,6 +5,8 @@ import com.elkattanman.farmFxml.domain.Capital;
 import com.elkattanman.farmFxml.domain.Sale;
 import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.repositories.SaleRepository;
+import com.elkattanman.farmFxml.repositories.TypeRepository;
+import com.elkattanman.farmFxml.util.AlertMaker;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
@@ -27,6 +29,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 @Component
@@ -62,10 +65,12 @@ public class SaleController implements Initializable, CallBack<Boolean, Sale> {
     private final SaleRepository saleRepository;
     private final CapitalRepository capitalRepository;
 
+    private final TypeRepository typeRepository;
 
-    public SaleController(SaleRepository saleRepository, CapitalRepository capitalRepository) {
+    public SaleController(TypeRepository typeRepository,SaleRepository saleRepository, CapitalRepository capitalRepository) {
         this.saleRepository = saleRepository;
         this.capitalRepository = capitalRepository;
+        this.typeRepository = typeRepository ;
     }
 
     private void initCol() {
@@ -133,6 +138,11 @@ public class SaleController implements Initializable, CallBack<Boolean, Sale> {
     @FXML
     void remove(ActionEvent event){
         Sale selectedItem = table.getSelectionModel().getSelectedItem();
+        //amr alaa
+
+        selectedItem.getType().setTotal( selectedItem.getType().getTotal() + selectedItem.getNumber() );
+        typeRepository.save(selectedItem.getType()) ;
+
         saleRepository.delete(selectedItem);
         list.remove(selectedItem) ;
         Capital capital = capitalRepository.findById(1).get();

@@ -124,12 +124,21 @@ public class SaleAddController implements Initializable {
 
     @FXML
     private void addProduct(ActionEvent event) {
-        if (!makeBuy())return;
+
         if (isInEditMode) {
             handleEditOperation();
             return;
         }
+        if (!makeBuy())return;
 
+        int oldTotal = mySale.getType().getTotal() ;
+
+        if(mySale.getType().getTotal() - mySale.getNumber() < 0 ){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation",   "لا يمكن و لديك "+ oldTotal);
+            return;
+        }
+        mySale.getType().setTotal( mySale.getType().getTotal() - mySale.getNumber() );
+        typeRepository.save(mySale.getType()) ;
         Sale save = saleRepository.save(mySale);
         callBack.callBack(save);
         clearEntries();
@@ -155,7 +164,22 @@ public class SaleAddController implements Initializable {
     }
 
     private void handleEditOperation() {
+        Sale old = mySale ;
+        int oldNumber = mySale.getNumber() ;
         if(!makeBuy())return;
+
+        //amr alaa
+        old.getType().setTotal( old.getType().getTotal() + oldNumber );
+        typeRepository.save(old.getType()) ;
+        mySale.getType().setTotal(old.getType().getTotal());
+        int oldTotal = old.getType().getTotal() ;
+        if( mySale.getType().getTotal() - mySale.getNumber() < 0 ){
+            AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Faild operation",   "لا يمكن و لديك "+ oldTotal);
+            return;
+        }
+        mySale.getType().setTotal( mySale.getType().getTotal() - mySale.getNumber() );
+        typeRepository.save(mySale.getType()) ;
+        //end amr alaa
         Sale save = saleRepository.save(mySale);
         callBack.callBack(save);
         AlertMaker.showMaterialDialog(rootPane, mainContainer, new ArrayList<>(), "Success operation", "تمت عمليه التعديل");

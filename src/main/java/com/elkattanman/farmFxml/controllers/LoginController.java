@@ -38,7 +38,7 @@ public class LoginController implements Initializable {
     @FXML
     private JFXPasswordField password;
 
-    private Preferences preference;
+    private Preferences preference = Preferences.getPreferences();
 
     public LoginController() {}
 
@@ -57,7 +57,9 @@ public class LoginController implements Initializable {
 
         String uname = StringUtils.trimToEmpty(username.getText());
         String pword = DigestUtils.shaHex(password.getText());
-        if (uname.equals(preference.getUsername()) && pword.equals(preference.getPassword())) {
+       // String pword =StringUtils.trimToEmpty(password.getText());
+
+        if (uname.equals(preference.getUsername()) && pword.equals(preference.getPassword())){
             AssistantUtil.loadWindow(AssistantUtil.getStage(rootPane), fxWeaver.loadView(MainController.class));
             log.info("User successfully logged in {}", uname);
         } else {
@@ -65,6 +67,7 @@ public class LoginController implements Initializable {
             password.getStyleClass().add("wrong-credentials");
             AlertMaker.showSimpleAlert("Email or password not valid", "اسم المستخدم او كلمة المرور خطأ");
         }
+        // if (uname.equals(preference.getUsername()) && pword.equals(preference.getPassword()))
     }
 
     @FXML
@@ -82,7 +85,7 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Animation();
-        preference=Preferences.getPreferences();
+       // preference=Preferences.getPreferences();
     }
 
 

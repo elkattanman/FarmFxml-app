@@ -1,9 +1,11 @@
 package com.elkattanman.farmFxml.controllers.death;
 
 import com.elkattanman.farmFxml.callback.CallBack;
+import com.elkattanman.farmFxml.domain.Buy;
 import com.elkattanman.farmFxml.domain.Death;
 import com.elkattanman.farmFxml.repositories.CapitalRepository;
 import com.elkattanman.farmFxml.repositories.DeathRepository;
+import com.elkattanman.farmFxml.repositories.TypeRepository;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
@@ -57,8 +59,10 @@ public class DeathController implements Initializable, CallBack<Boolean, Death> 
 
     private ObservableList<Death> list = FXCollections.observableArrayList();
     private final DeathRepository deathRepository;
+    private final TypeRepository typeRepository;
 
-    public DeathController(DeathRepository deathRepository) {
+    public DeathController(DeathRepository deathRepository, TypeRepository typeRepository) {
+        this.typeRepository = typeRepository ;
         this.deathRepository = deathRepository;
     }
 
@@ -75,7 +79,8 @@ public class DeathController implements Initializable, CallBack<Boolean, Death> 
         list.setAll(deathRepository.findAll());
         table.setItems(list);
         MakeMyFilter();
-        infoTXT.setText("العدد الكلى = "+ list.size() );
+        int total = list.stream().mapToInt(Death::getNumber).sum();
+        infoTXT.setText("العدد الكلى = "+ list.size() +" والاجمالى = "+ total);
 
     }
 
@@ -97,12 +102,12 @@ public class DeathController implements Initializable, CallBack<Boolean, Death> 
                         }
                         return false;
                     });
-                    infoTXT.setText("العدد الكلى = "+ filteredData.size() );
+                    int total = filteredData.stream().mapToInt(Death::getNumber).sum();
+                    infoTXT.setText("العدد الكلى = "+ filteredData.size() +" والاجمالى = "+ total);
                 });
 
         SortedList<Death> sorted = new SortedList<>(filteredData) ;
         sorted.comparatorProperty().bind(table.comparatorProperty());
-        infoTXT.setText("العدد الكلى = "+ sorted.size() );
         table.setItems(sorted);
     }
 
@@ -121,6 +126,10 @@ public class DeathController implements Initializable, CallBack<Boolean, Death> 
     @FXML
     void remove(ActionEvent event){
         Death selectedItem = table.getSelectionModel().getSelectedItem();
+
+        selectedItem.getType().setTotal( selectedItem.getType().getTotal() + selectedItem.getNumber() );
+        typeRepository.save(selectedItem.getType()) ;
+
         deathRepository.delete(selectedItem);
         list.remove(selectedItem) ;
     }
