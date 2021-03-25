@@ -26,5 +26,10 @@
                 <MenuItem mnemonicParsing="false" onAction="#goToTreatment" text="عرض الادويه" />
             </items>
         </Menu>
+        <Menu mnemonicParsing="false" text="مساعده">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#goHelp" text="عن المبرمج" />
+            </items>
+        </Menu>
     </menus>
 </MenuBar>

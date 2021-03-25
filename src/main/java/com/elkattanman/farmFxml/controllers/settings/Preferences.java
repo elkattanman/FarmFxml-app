@@ -81,7 +81,7 @@ public class Preferences {
             writer = new FileWriter(CONFIG_FILE);
             gson.toJson(preference, writer);
 
-            AlertMaker.showSimpleAlert("Success", "Settings updated");
+//            AlertMaker.showSimpleAlert("Success", "Settings updated");
         } catch (IOException ex) {
             Logger.getLogger(Preferences.class.getName()).log(Level.SEVERE, null, ex);
             AlertMaker.showErrorMessage(ex, "Failed", "Cant save configuration file");

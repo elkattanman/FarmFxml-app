@@ -21,6 +21,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -121,5 +123,33 @@ public class AssistantUtil {
         } catch (IOException ex) {
             log.error("An exception occurred!",ex);
         }
+    }
+
+    public boolean backup(String dbUsername, String dbPassword, String dbName, File backupDirectory)
+            throws IOException, InterruptedException {
+        //file name+date
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy_MM_dd_hh_mm_ss");
+        String outputFile = backupDirectory.getAbsolutePath() + File.separator + LocalDateTime.now().format(dateFormat)+".sql";
+
+        String command = String.format("mysqldump -u%s -p%s --add-drop-table --databases %s -r %s",
+                dbUsername, dbPassword, dbName, outputFile);
+        Process process = Runtime.getRuntime().exec(command);
+        int processComplete = process.waitFor();
+        return processComplete == 0;
+    }
+
+    public static boolean restore(String dbUsername, String dbPassword, String dbName, String sourceFile)
+            throws IOException, InterruptedException {
+        String[] command = new String[]{
+                "mysql",
+                "-u" + dbUsername,
+                "-p" + dbPassword,
+                "-e",
+                " source " + sourceFile,
+                dbName
+        };
+        Process runtimeProcess = Runtime.getRuntime().exec(command);
+        int processComplete = runtimeProcess.waitFor();
+        return processComplete == 0;
     }
 }

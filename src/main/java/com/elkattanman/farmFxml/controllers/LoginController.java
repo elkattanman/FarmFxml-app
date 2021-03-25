@@ -1,6 +1,8 @@
 package com.elkattanman.farmFxml.controllers;
 
 import com.elkattanman.farmFxml.controllers.settings.Preferences;
+import com.elkattanman.farmFxml.domain.User;
+import com.elkattanman.farmFxml.repositories.UserRepository;
 import com.elkattanman.farmFxml.util.AlertMaker;
 import com.elkattanman.farmFxml.util.AssistantUtil;
 import com.jfoenix.controls.JFXPasswordField;
@@ -16,12 +18,12 @@ import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -38,9 +40,12 @@ public class LoginController implements Initializable {
     @FXML
     private JFXPasswordField password;
 
-    private Preferences preference = Preferences.getPreferences();
+//    private Preferences preference = Preferences.getPreferences();
+    private UserRepository userRepository;
 
-    public LoginController() {}
+    public LoginController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     private void Animation() {
         FadeTransition fadeTransition1 = new FadeTransition(Duration.seconds(1.5), rootPane);
@@ -54,12 +59,18 @@ public class LoginController implements Initializable {
         doLogin();
     }
     void doLogin(){
-
         String uname = StringUtils.trimToEmpty(username.getText());
-        String pword = DigestUtils.shaHex(password.getText());
-       // String pword =StringUtils.trimToEmpty(password.getText());
+//        String pword = DigestUtils.shaHex(password.getText());
+        String pword =StringUtils.trimToEmpty(password.getText());
 
-        if (uname.equals(preference.getUsername()) && pword.equals(preference.getPassword())){
+        Optional<User> byUsername = userRepository.findByUsername(uname);
+        Optional<User> byEmail= userRepository.findByEmail(uname);
+
+        if ( (byUsername.isPresent() && byUsername.get().getPassword().equals(pword)) || (byEmail.isPresent() && byEmail.get().getPassword().equals(pword)) ){
+            Preferences preferences = Preferences.getPreferences();
+            preferences.setUsername(uname);
+            preferences.setPassword(pword);
+            Preferences.writePreferenceToFile(preferences);
             AssistantUtil.loadWindow(AssistantUtil.getStage(rootPane), fxWeaver.loadView(MainController.class));
             log.info("User successfully logged in {}", uname);
         } else {

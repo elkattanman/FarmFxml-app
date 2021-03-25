@@ -28,11 +28,11 @@ public class AboutController implements Initializable {
     private static final String LINKED_IN = "https://www.linkedin.com/in/mustafa-khaled-611760123/";
     private static final String FACEBOOK = "http://facebook.com/elkattanman";
     private static final String WEBSITE = "http://facebook.com/elkattanman";
-    private static final String YOUTUBE = "https://www.youtube.com/";
+    private static final String YOUTUBE = "https://www.youtube.com/user/mufixcommunity";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        AlertMaker.showTrayMessage(String.format("Hello %s!", System.getProperty("user.name")), "Thanks for trying out Library Assistant");
+        AlertMaker.showTrayMessage(String.format("Hello %s!", System.getProperty("user.name")), "Thanks for trying out Farm System v1.2");
     }
 
     private void loadWebpage(String url) {
@@ -51,7 +51,7 @@ public class AboutController implements Initializable {
         Stage stage = new Stage();
         Scene scene = new Scene(new StackPane(browser));
         stage.setScene(scene);
-        stage.setTitle("Genuine Coder");
+        stage.setTitle("Mustafa Khaled");
         stage.show();
         AssistantUtil.setStageIcon(stage);
     }

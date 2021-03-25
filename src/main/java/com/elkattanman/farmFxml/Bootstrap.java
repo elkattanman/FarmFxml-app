@@ -25,7 +25,7 @@ public class Bootstrap implements CommandLineRunner {
         }
         if(userRepository.findAll().size()==0){
             log.info("Creating admin user");
-            userRepository.save(new User(null,"admin","admin","admin@mail.com"));
+            userRepository.save(new User(null,"admin@mail.com","admin","admin"));
         }
     }
 }
